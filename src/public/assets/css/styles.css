@@ -1,0 +1,138 @@
+@font-face {
+  font-family: "lcd";
+  src: url("../fonts/lcd.ttf");
+  font-display: swap;
+}
+@font-face {
+  font-family: "major";
+  src: url("../fonts/major.ttf");
+  font-display: swap;
+}
+*  {
+  font-family: "major";
+}
+.home {
+  display: inline;
+  text-align: center;
+}
+.home > .menu {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .home > .menu {
+    max-width: 80%;
+  }
+}
+.home > .menu > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 2.5em;
+  font-weight: bold;
+  width: 30%;
+  height: 4vh;
+  background-color: lightgray;
+  margin: 10px;
+  padding: 4vh 10px 4vh 10px;
+  text-align: center;
+}
+.home > .menu > div > img {
+  width: 0.8em;
+  height: 0.8em;
+}
+.challenge {
+  display: none;
+}
+.top {
+  position: absolute;
+  display: flex;
+}
+.top > div {
+  border: 1px black dotted;
+  width: 20px;
+  font-family: lcd;
+  text-align: right;
+  margin: 2px;
+  padding: 2px;
+}
+.uno {
+  color: red;
+}
+.dos {
+  color: orange;
+}
+.tres {
+  color: green;
+}
+.cuatro {
+ color: blue;
+}
+.cinco {
+  color: mediumPurple;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  .container {
+    max-width: 80%;
+  }
+}
+.timer {
+  position: absolute;
+  width: 85%;
+  text-align: right;
+  font-family: "major";
+  font-size: 2em;
+  font-weight: bold;
+  color: red;
+}
+.main {
+  font-family: "major";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 35vh;
+  font-size: 2em;
+}
+.question-right {
+  font-weight: bold;
+}
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+.numbers > div {
+  display: flex;
+  align-items: center;
+  width: 26%;
+  height: 50px;
+  margin: 10px;
+  background-color: lightgray;
+}
+.numbers > div > div {
+  font-family: "lcd";
+  font-size: 2em;
+  text-align: center;
+  width: 100%;
+}
+.numbers img {
+    width: 0.8em;
+    height: 0.8em;
+}
+#start {
+    display: none;
+}
+#stop {
+    display: inline;
+}
