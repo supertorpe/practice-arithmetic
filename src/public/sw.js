@@ -1,4 +1,4 @@
-var cacheName = 'multiplicar-pwa';
+var cacheName = 'practica-calculo-pwa';
 var filesToCache = [
     '/',
     '/index.html',

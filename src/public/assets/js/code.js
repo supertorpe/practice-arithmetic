@@ -80,7 +80,7 @@ const initialize = function () {
     nextChallenge();
 };
 
-const begin = function(exercise) {
+const begin = function (exercise) {
     currentExercise = exercise;
     initialize();
 };
@@ -130,7 +130,7 @@ const nextChallenge = function () {
         Math.random() * data[currentExercise].boxes[candidate].stack.length
     );
     currentChallenge.challenge =
-    data[currentExercise].boxes[currentChallenge.idxBox].stack[currentChallenge.idxChallenge];
+        data[currentExercise].boxes[currentChallenge.idxBox].stack[currentChallenge.idxChallenge];
     document.querySelector(".question").innerHTML =
         currentChallenge.challenge.query;
     currentChallenge.answer = "";
@@ -246,7 +246,7 @@ const clickDigit = function (digit) {
 };
 
 const reset = function () {
-    if (confirm("¿Quieres eliminar todos tus avances?"))  {
+    if (confirm("¿Quieres eliminar todos tus avances?")) {
         localStorage.removeItem("data");
         initialize();
     }
@@ -264,7 +264,7 @@ const start = function () {
     document.querySelector('#start').style.display = 'none';
 };
 
-const home = function() {
+const home = function () {
     clearTimer();
     document.querySelector('.home').style.display = 'inline';
     document.querySelector('.challenge').style.display = 'none';
@@ -273,7 +273,10 @@ const home = function() {
 window.onload = () => {
     'use strict';
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker
-            .register('/assets/js/sw.js');
+        navigator.serviceWorker.register('/sw.js').then(function (registration) {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            console.log('ServiceWorker registration failed: ', err);
+        });
     }
 }
