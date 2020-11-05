@@ -248,7 +248,6 @@ const clickDigit = function (digit) {
 const reset = function () {
     if (confirm("¿Quieres eliminar todos tus avances?")) {
         localStorage.removeItem("data");
-        initialize();
     }
 };
 
