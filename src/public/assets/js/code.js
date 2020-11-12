@@ -108,12 +108,6 @@ const nextChallenge = function () {
     document.querySelector(".question").style.textDecoration = "";
     document.querySelector(".question-right").innerHTML = "";
     // buscar la siguiente pregunta
-    // si está en la primera pasada, pillar el candidato al azar de la caja central
-    if (isInInitialPhase()) {
-
-    } else {
-
-    }
     // si está en la primera pasada, pillar el challenge de la caja central
     if (isInInitialPhase()) {
         currentChallenge.idxBox = 2;
