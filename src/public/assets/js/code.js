@@ -8,6 +8,7 @@ const initialize = function () {
         data = [];
         for (let i = 0; i < 8; i++) {
             let exercise = {
+                latest: 0,
                 boxes: []
             };
             data.push(exercise);
@@ -20,49 +21,49 @@ const initialize = function () {
         }
         for (let i = 1; i < 10; i++) {
             for (let j = 1; j < 10; j++) {
-                data[0].boxes[2].stack.push({ query: `${i} + ${j} = _`, ans: i + j, count: 0 });
+                data[0].boxes[2].stack.push({ query: `${i} + ${j} = _`, ans: i + j, count: 0, serial: 0 });
             }
         }
         for (let i = 1; i < 10; i++) {
             for (let j = 1; j < 10; j++) {
-                data[1].boxes[2].stack.push({ query: `${i} + _ = ${i + j}`, ans: j, count: 0 });
-                data[1].boxes[2].stack.push({ query: `_ + ${j} = ${i + j}`, ans: i, count: 0 });
+                data[1].boxes[2].stack.push({ query: `${i} + _ = ${i + j}`, ans: j, count: 0, serial: 0 });
+                data[1].boxes[2].stack.push({ query: `_ + ${j} = ${i + j}`, ans: i, count: 0, serial: 0 });
             }
         }
         for (let i = 1; i < 10; i++) {
             for (let j = 1; j < 10; j++) {
                 if (i > j)
-                    data[2].boxes[2].stack.push({ query: `${i} - ${j} = _`, ans: i - j, count: 0 });
+                    data[2].boxes[2].stack.push({ query: `${i} - ${j} = _`, ans: i - j, count: 0, serial: 0 });
             }
         }
         for (let i = 1; i < 10; i++) {
             for (let j = 1; j < 10; j++) {
                 if (i > j) {
-                    data[3].boxes[2].stack.push({ query: `${i} - _ = ${i - j}`, ans: j, count: 0 });
-                    data[3].boxes[2].stack.push({ query: `_ - ${j} = ${i - j}`, ans: i, count: 0 });
+                    data[3].boxes[2].stack.push({ query: `${i} - _ = ${i - j}`, ans: j, count: 0, serial: 0 });
+                    data[3].boxes[2].stack.push({ query: `_ - ${j} = ${i - j}`, ans: i, count: 0, serial: 0 });
                 }
             }
         }
         for (let i = 2; i < 10; i++) {
             for (let j = 2; j < 10; j++) {
-                data[4].boxes[2].stack.push({ query: `${i} x ${j} = _`, ans: i * j, count: 0 });
+                data[4].boxes[2].stack.push({ query: `${i} x ${j} = _`, ans: i * j, count: 0, serial: 0 });
             }
         }
         for (let i = 2; i < 10; i++) {
             for (let j = 2; j < 10; j++) {
-                data[5].boxes[2].stack.push({ query: `${i} x _ = ${i * j}`, ans: j, count: 0 });
-                data[5].boxes[2].stack.push({ query: `_ x ${j} = ${i * j}`, ans: i, count: 0 });
+                data[5].boxes[2].stack.push({ query: `${i} x _ = ${i * j}`, ans: j, count: 0, serial: 0 });
+                data[5].boxes[2].stack.push({ query: `_ x ${j} = ${i * j}`, ans: i, count: 0, serial: 0 });
             }
         }
         for (let i = 2; i < 10; i++) {
             for (let j = 2; j < 10; j++) {
-                data[6].boxes[2].stack.push({ query: `${i * j} / ${i} = _`, ans: j, count: 0 });
+                data[6].boxes[2].stack.push({ query: `${i * j} / ${i} = _`, ans: j, count: 0, serial: 0 });
             }
         }
         for (let i = 2; i < 10; i++) {
             for (let j = 2; j < 10; j++) {
-                data[7].boxes[2].stack.push({ query: `${i * j} / _ = ${i}`, ans: j, count: 0 });
-                data[7].boxes[2].stack.push({ query: `_ / ${i} = ${j}`, ans: i * j, count: 0 });
+                data[7].boxes[2].stack.push({ query: `${i * j} / _ = ${i}`, ans: j, count: 0, serial: 0 });
+                data[7].boxes[2].stack.push({ query: `_ / ${i} = ${j}`, ans: i * j, count: 0, serial: 0 });
             }
         }
         localStorage.setItem("data", JSON.stringify(data));
@@ -106,37 +107,45 @@ const nextChallenge = function () {
     document.querySelector(".timer").innerHTML = "";
     document.querySelector(".question").style.textDecoration = "";
     document.querySelector(".question-right").innerHTML = "";
-    // buscar la caja
-    let candidate = 0;
-    // si está en la primera pasada, pillar el candidato de la caja central
+    // buscar la siguiente pregunta
+    // si está en la primera pasada, pillar el candidato al azar de la caja central
     if (isInInitialPhase()) {
-        candidate = 2;
+
     } else {
-        // si no, localizar la caja de la que extraer el challenge
+
+    }
+    // si está en la primera pasada, pillar el challenge de la caja central
+    if (isInInitialPhase()) {
+        currentChallenge.idxBox = 2;
+        currentChallenge.idxChallenge = Math.floor(
+            Math.random() * data[currentExercise].boxes[2].stack.length);
+    } else {
+        // si no, buscar challenge de izquierda a derecha
+        let encontrado = false;
         for (let i = 0; i < data[currentExercise].boxes.length; i++) {
-            if (data[currentExercise].boxes[i].stack.length === 0) continue;
-            if (data[currentExercise].boxes[candidate].stack.length === 0) candidate = i;
-            if (candidate === data.length - 1) break;
-            if (
-                i > candidate &&
-                data[currentExercise].boxes[candidate].count > data[currentExercise].boxes[i].count * 3 * (i - candidate)
-            )
-                candidate = i;
+            for (let j = 0; j < data[currentExercise].boxes[i].stack.length; j++) {
+                if (data[currentExercise].latest == 0 || data[currentExercise].latest > data[currentExercise].boxes[i].stack[j].serial + 4) {
+                    encontrado = true;
+                    currentChallenge.idxBox = i;
+                    currentChallenge.idxChallenge = j;
+                    break;
+                }
+            }
+            if (encontrado) {
+                break;
+            }
         }
     }
-    // seleccionar uno al azar
-    currentChallenge.idxBox = candidate;
-    currentChallenge.idxChallenge = Math.floor(
-        Math.random() * data[currentExercise].boxes[candidate].stack.length
-    );
     currentChallenge.challenge =
-        data[currentExercise].boxes[currentChallenge.idxBox].stack[currentChallenge.idxChallenge];
+                        data[currentExercise].boxes[currentChallenge.idxBox].stack[currentChallenge.idxChallenge];
+    data[currentExercise].latest++;
+    currentChallenge.challenge.serial = data[currentExercise].latest;
     document.querySelector(".question").innerHTML =
         currentChallenge.challenge.query;
     currentChallenge.answer = "";
-    if (!isInInitialPhase()) data[currentExercise].boxes[candidate].count++;
+    if (!isInInitialPhase()) data[currentExercise].boxes[currentChallenge.idxBox].count++;
     if (currentChallenge.challenge.count > 0) {
-        startTimer(2 + (data[currentExercise].boxes.length - candidate) * 3);
+        startTimer(2 + (data[currentExercise].boxes.length - currentChallenge.idxBox) * 3);
     } else {
         startTimer(10);
     }
