@@ -85,6 +85,15 @@
     max-width: 80%;
   }
 }
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding-bottom: 2px;
+  width: 100%;
+  font-size: 0.8em;
+  text-align: center;
+}
 .timer {
   position: absolute;
   width: 85%;
