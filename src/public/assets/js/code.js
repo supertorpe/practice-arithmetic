@@ -156,6 +156,7 @@ const clearTimer = function () {
         clearInterval(timer);
         timer = null;
     }
+    clearNextChallengeTimeout();
 };
 
 const startTimer = function (time) {
@@ -168,6 +169,22 @@ const startTimer = function (time) {
             manageError();
         }
     }, 1000);
+};
+
+let nextChallengeTimeout;
+
+const startNextChallengeTimeout = function (time) {
+    clearNextChallengeTimeout();
+    nextChallengeTimeout = setTimeout(function () {
+        nextChallenge();
+    }, time);
+};
+
+const clearNextChallengeTimeout = function () {
+    if (nextChallengeTimeout) {
+        clearTimeout(nextChallengeTimeout);
+        nextChallengeTimeout = null;
+    }
 };
 
 const manageError = function () {
@@ -192,10 +209,7 @@ const manageError = function () {
         currentChallenge.challenge.ans
     );
     document.querySelector(".question").style.textDecoration = "line-through";
-    const timeout = setTimeout(function () {
-        clearTimeout(timeout);
-        nextChallenge();
-    }, 3000);
+    startNextChallengeTimeout(3000);
 };
 
 const manageSuccess = function () {
@@ -212,10 +226,7 @@ const manageSuccess = function () {
         //data[currentChallenge.idxBox + 1].count++;
     }
     saveData();
-    const timeout = setTimeout(function () {
-        clearTimeout(timeout);
-        nextChallenge();
-    }, 1000);
+    startNextChallengeTimeout(1000);
 };
 
 const saveData = function () {
